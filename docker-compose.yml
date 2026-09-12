@@ -1,0 +1,13 @@
+services:
+  kodi:
+    image: docker-kodi
+    hostname: kodi-cec
+    devices:
+      - /dev/dri
+      - /dev/input:/dev/input
+      - /dev/snd:/dev/snd
+      - /dev/cec0
+    group_add:
+      - video
+    volumes:
+      - ./data:/root/.kodi/
