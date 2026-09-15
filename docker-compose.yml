@@ -1,12 +1,16 @@
 services:
-  kodi:
-    image: docker-kodi
-    hostname: kodi-cec
+  kodi-rpi:
+    image: p-boon/kodi-rpi
+    hostname: kodi-rpi
+    stop_grace_period: 20s
     devices:
       - /dev/dri
       - /dev/input:/dev/input
       - /dev/snd:/dev/snd
       - /dev/cec0
+      - /dev/video10
+      - /dev/video19
+      - /dev/media0
     group_add:
       - video
     volumes:

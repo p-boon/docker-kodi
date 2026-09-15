@@ -9,19 +9,21 @@ shutdown_handler() {
   if [ -n $cec_monitor_pid ]
   then
     echo "sending SIGTERM to cec_monitor ($cec_monitor_pid)"
-    kill -s SIGTERM $cec_monitor_pid
+    kill -s TERM $cec_monitor_pid
   fi
 
   if [ -n $cec_follower_pid ]
   then
     echo "sending SIGTERM to cec-follower ($cec_follower_pid)"
-    kill -s SIGTERM $cec_follower_pid
+    kill -s TERM $cec_follower_pid
   fi
 
   echo "waiting for cec_monitor $cec_monitor_pid"
   wait $cec_monitor_pid
   exit_code=$?
   echo "cec_monitor exited $exit_code"
+
+  rm cec_monitor_pipe
 
   exit $exit_code
 }
@@ -32,7 +34,7 @@ cec_monitor.sh "$KODI_START_CMD" "$KODI_PROC_NAME" < cec_monitor_pipe &
 cec_monitor_pid=$!
 echo "cec_monitor started $cec_monitor_pid"
 
-while [[ $retry_count > 0 ]]
+while [ $retry_count -gt 0 ]
 do
   retry_count=$((retry_count-1))
   cec-ctl --record 1> /dev/null 2> /dev/null
@@ -41,7 +43,6 @@ do
   cec_follower_pid=$!
   echo "cec-follower started $cec_follower_pid"
   
-  pstree -p
   wait $cec_follower_pid
   cec_exit_code=$?
 

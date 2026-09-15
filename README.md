@@ -1,3 +1,3 @@
-# p-boon/docker-kodi
+# p-boon/kodi-rpi
 
-Runs Kodi with GUI in Docker. The container will keep running while Kodi Starts/stops based on your HDMI connection using cec-follower. Tested on rpi.
+Runs Raspberry PI optimized Kodi with GUI in Docker. The container will keep running while Kodi Starts/stops based on your HDMI connection using cec-follower.

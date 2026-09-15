@@ -29,12 +29,12 @@ trap "shutdown_handler" TERM
 while true
 do
   read line
-  # to determine if kodi is running, any instance (regardless if it was started by this script) is checked.
-  kodi_pid=$(pgrep -x "$KODI_PROC_NAME")
+  kodi_pid=$(pidof "$KODI_PROC_NAME")
   case "$line" in
     $ONLINE_PATTERN)
     if [ -z "$kodi_pid" ]
     then
+      echo $line
       echo "starting $KODI_START_CMD"
       $KODI_START_CMD &
       started_kodi_pid=$!
@@ -48,8 +48,9 @@ do
       sleep $GRACE_PERIOD
       if cec-ctl | grep -q "$CEC_CTL_OFFLINE_PATTERN";
       then
-        echo "quiting kodi"
+        echo "quiting Kodi"
         kodi-send --action=Quit
+        started_kodi_pid=""
       fi
     fi
     ;;
